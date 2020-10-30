@@ -6,21 +6,7 @@
 ```{r}
 # This is a so-called "R chunk" where you can write R code.
 
-date(30.10.2020)
+date()
 
 ```
 The text continues here.
-
----
-title: "First course week"
-author: "Venla Johansson"
-output: "html_document"
----
-
-## First week
-
-I am __excited__ about this course. I have some previous experience in R, but the course I participated in the last time, was too advanced for me. I hope that during this course I learn to manage R and utilize some basic statistical analyses. In the future I'd like to utilize R with bioinformatics.
-
-Ps. Here's a link to my github repository [link](https://github.com/venlajohansson?tab=repositories)
-
-***
