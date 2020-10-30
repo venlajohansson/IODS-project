@@ -7,6 +7,8 @@ I am __excited__ about this course. I have some previous experience in R, but th
 
 Ps. Here's a link to my github repository [link](https://github.com/venlajohansson?tab=repositories)
 
+Pss. trying to solve why my git repository is not updating.
+
 ***
 
 ```{r}
