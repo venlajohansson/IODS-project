@@ -14,9 +14,7 @@ output:
 ***
 
 # Introduction to Open Data Science - Course Project
-I am __excited__ about this course. I have some previous experience in R, but the course I participated in the last time, was too advanced for me. I hope that during this course I learn to manage R and utilize some basic statistical analyses. In the future I'd like to utilize R with bioinformatics.
 
-Ps. Here's a link to my github repository [link](https://github.com/venlajohansson?tab=repositories)
 ```{r child = "chapter1.Rmd"}
 # This will include Chapter 1 (that is updated in its own file) in the document.
 ```
