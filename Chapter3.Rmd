@@ -1,0 +1,184 @@
+---
+title: "Chapter3.Rmd"
+author: "Venla Johansson"
+date: "11/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Week 3 exercises
+## Data wrangling excercise
+
+The data package was downloaded from https://archive.ics.uci.edu/ml/datasets/Student+Performance as csv format. Data tables were transferred to Data-folder int he IODS-project.
+
+My data script for data wrangling named "Week 3 exercises.R" was saved in the Data-folder in the IODS-project.
+
+Both student data (student-mat.csv and student-por.csv) was read with read.table function. Data tables were explored with str() and dim() functions.
+
+The data sets were joined firstly by selecting identifiers as an vector for the object named "student_identifiers". The structure and dimensions were explored as described before. Then, these selected identifiers were joined with the inner_join() function and object "math_por" was created.
+
+To combine the dublicated answers in the joined data, the if-else() function was used.
+
+Average of the answers related to weekday and weekend alcohol consumption was created with two new columns "alc_use" and "high_use". This was done with the mutate() function.
+
+New "alc" data table was glimpsed with glimpse() function, resulting in 382 rows and 35 columns.
+
+This table was saved as a csv-file with the write.csv() function. The csv. file was named as "alc.csv" and the directory was set to be the "data" file in the IODS-project.
+
+## Data analysis
+
+I read the data tables and printed out the names of the variables with the function colnames() for both math and por.csv. 
+
+### Choosing 4 variables and exploring the relationships between them and alcohol use
+I chose 4 variables (age, failures, absences and health) to study the relationships between high/low alcohol consumption. 4 hypotheses that I created are
+
+1. High consumption of alcohol is associated with higher amount of absences
+2. High alcohol consumption is not dependent on the age
+3. High alcohol consumption is associated with lower health status
+4. Low alcohol consumption is associated with lower amount of failures
+
+To do this, I used simple regression and graphic plot() and regression line (method = lm) for all the hypotheses.
+
+First hypothesis is true, due to low p-value:
+
+Call:
+lm(formula = high_use ~ absences, data = alc)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.0572 -0.2891 -0.2329  0.5611  0.7859 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 0.214125   0.029659   7.220 2.86e-12 ***
+absences    0.018734   0.004194   4.467 1.05e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4472 on 380 degrees of freedom
+Multiple R-squared:  0.04989,	Adjusted R-squared:  0.04739 
+F-statistic: 19.96 on 1 and 380 DF,  p-value: 1.047e-05
+
+Second hypothesis is also true, because the p-value is not significant for the variables.
+
+Call:
+lm(formula = high_use ~ age, data = alc)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.4491 -0.3167 -0.2726  0.6392  0.7716 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept) -0.43350    0.33090  -1.310   0.1910  
+age          0.04413    0.01990   2.217   0.0272 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4558 on 380 degrees of freedom
+Multiple R-squared:  0.01277,	Adjusted R-squared:  0.01018 
+F-statistic: 4.917 on 1 and 380 DF,  p-value: 0.02719
+
+Third hypothesis is not true. P-value states that there is no correlation between these two variables.
+
+Call:
+lm(formula = high_use ~ health, data = alc)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.3265 -0.3068 -0.2872  0.6735  0.7521 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.22823    0.06435   3.547 0.000439 ***
+health       0.01964    0.01677   1.171 0.242246    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4579 on 380 degrees of freedom
+Multiple R-squared:  0.003597,	Adjusted R-squared:  0.0009748 
+F-statistic: 1.372 on 1 and 380 DF,  p-value: 0.2422
+
+Fourth hypothesis is true and there seems to be a correlation according to the p-value, although this correlation is not so strong according to the F-statistics.
+
+Call:
+lm(formula = high_use ~ failures, data = alc)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.6447 -0.2735 -0.2735  0.6028  0.7265 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.27349    0.02453  11.149  < 2e-16 ***
+failures     0.12373    0.03981   3.108  0.00203 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4531 on 380 degrees of freedom
+Multiple R-squared:  0.02479,	Adjusted R-squared:  0.02222 
+F-statistic: 9.658 on 1 and 380 DF,  p-value: 0.002027
+
+### logistic regression, using alc_use and high_use as target variable and the chosen variables.
+
+By interpreting the coefficients it seems that absences, age and failures are correlated with the alc_use.
+
+Call:
+lm(formula = alc_use ~ absences + age + health + failures, data = alc)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4451 -0.6958 -0.2683  0.4642  3.4303 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.113912   0.719083  -0.158 0.874216    
+absences     0.034459   0.008926   3.860 0.000133 ***
+age          0.097533   0.042353   2.303 0.021831 *  
+health       0.050560   0.034882   1.449 0.148049    
+failures     0.244075   0.085019   2.871 0.004325 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.9433 on 377 degrees of freedom
+Multiple R-squared:  0.09225,	Adjusted R-squared:  0.08261 
+F-statistic: 9.578 on 4 and 377 DF,  p-value: 2.196e-07
+
+Odds ratios with their confidence intervals (using coef, confint functions and exp function)
+
+For alc_use and chosen variables
+                  OR2     2.5 %   97.5 %
+(Intercept) 0.7444393 0.3843057 1.442055
+absences    1.0175330 1.0092155 1.025919
+age         1.0264950 0.9872880 1.067259
+health      1.0173774 0.9852636 1.050538
+failures    1.1045403 1.0214819 1.194352
+
+If I have understood correctly, there are no statistically significant associations giving that 95% confidence intervals are close to 1 
+
+For high_use and chosen variables
+
+OR     2.5 %   97.5 %
+(Intercept) 0.8923366 0.2170066 3.669311
+absences    1.0350596 1.0170510 1.053387
+age         1.1024483 1.0143575 1.198189
+health      1.0518595 0.9821327 1.126537
+failures    1.2764406 1.0799384 1.508698
+
+The failures has a slight signifigance, and there is a 30% of increase in the odds with having a failure with high alcohol use.
+
+### prediction values and cross tabulation
+
+I used the predict function and mutation function to create prediction values. Then I used table function to create cross tabulation for the real and predicted values. 
+
+        prediction
+high_use FALSE TRUE
+   FALSE   256   12
+   TRUE     98   16
+   
+382 total predictions, out of which True positives= 16, true negatives = 256, False positives = 12 and False negatives = 98. The accuracy of the model = 0.71, the classifier is correct 71% of the time. The precision of the model is around 0.6 so the predictions is correct 60% of the time.
+
+Trying to solve the push problem.
